@@ -45,25 +45,14 @@ import download from "../../components/download.vue";
 import watg from "../../components/watg.vue";
 import gotop from "../../components/gotop.vue";
 
-import axios from "axios";
+import dataList from "../../components/dataList.vue"; 
 
 export default {
   data() {
     return {
-      mlistobjects: "",
+      mlistobjects: dataList.data,
       topuserimg: "",
     };
-  },
-  created() {
-    axios
-      .get("http://localhost:3000/index_tis")
-      .then((res) => {
-        this.mlistobjects = eval("(" + JSON.stringify(res.data) + ")");
-        console.log(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   },
   components: {
     topbar,

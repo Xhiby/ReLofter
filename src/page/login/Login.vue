@@ -25,22 +25,13 @@ const axios = require("axios");
 export default {
   data: function () {
     return {
-      userid: "",
-      username: "",
-      password: "",
+      username: "Admin",
+      password: "123",
     };
   },
   methods: {
     login: function () {
-      axios
-        .get("http://localhost:3000/user_tis")
-        .then((res) => {
-          //登录校验
-          this.$router.push("/index");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      this.$router.push("/index");
     },
   },
 };

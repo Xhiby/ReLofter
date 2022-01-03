@@ -3,26 +3,42 @@ import VueRouter from 'vue-router'
 
 import Login from '../page/login/Login.vue'
 import Index from '../page/index/Index.vue'
+import More from '../page/more/More.vue'
+import User from '../page/user/User.vue'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
-    path: '/',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/index',
-    name: 'Index',
-    component: Index
-  }
+const routes = [{
+        path: '/',
+        redirect: '/login'
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login
+    },
+    {
+        path: '/index',
+        name: 'Index',
+        component: Index
+    },
+    {
+        path: '/more',
+        name: 'More',
+        component: More
+    },
+    {
+        path: '/user',
+        name: 'User',
+        component: User
+    }
 ]
 
 const router = new VueRouter({
-  mode: 'hash',
-  base: process.env.BASE_URL,
-  routes
+    // base: '/relofter',
+    // mode: 'history',
+    base: process.env.BASE_URL,
+    routes
 })
 
 export default router

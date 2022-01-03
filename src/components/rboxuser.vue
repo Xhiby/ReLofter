@@ -1,7 +1,6 @@
 <template>
   <div id="rboxuser">
-    <a class="rboxuser" href="user.html" target="_blank">
-    </a>
+    <router-link class="rboxuser" to="/user"> <p>Admin</p></router-link>
     <div class="rboxusermore">
       <a href="#"></a>
     </div>

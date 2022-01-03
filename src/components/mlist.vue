@@ -29,7 +29,7 @@
 <script>
 export default {
   props: {
-    userid: Number,
+    userid: String,
     username: String,
     userimg: String,
     imgsrc: String,
