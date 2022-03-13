@@ -1,110 +1,140 @@
 <template>
-  <div class="user">
-    <div id="usd">
-      <usd></usd>
-    </div>
-    <div id="userlistcon" class="umn">
-      <div class="umntop">
-          <router-link to="/index">返回首页</router-link>
+  <div id="user">
+    <userpanel
+      v-bind:username="username"
+      v-bind:userimg="local + userimg"
+    ></userpanel>
+
+    <div>
+      <div class="usertop">
+        <router-link to="/index">返回首页</router-link>
       </div>
-      <div id="umnitem">
-        <div class="umnitem1">
-          <umnitem
-            v-for="userlist1 in userlists1"
-            v-bind:key="userlist1.id"
-            v-bind:id="userlist1.id"
-            v-bind:imgsrc="userlist1.imgsrc"
-            v-bind:title="userlist1.title"
-            v-bind:content="userlist1.content"
-          ></umnitem>
-        </div>
 
-        <div class="umnitem2">
-          <umnitem
-            v-for="userlist2 in userlists2"
-            v-bind:key="userlist2.id"
-            v-bind:id="userlist2.id"
-            v-bind:imgsrc="userlist2.imgsrc"
-            v-bind:title="userlist2.title"
-            v-bind:content="userlist2.content"
-          ></umnitem>
-        </div>
-
-        <div class="umnitem3">
-          <umnitem
-            v-for="userlist3 in userlists3"
-            v-bind:key="userlist3.id"
-            v-bind:id="userlist3.id"
-            v-bind:imgsrc="userlist3.imgsrc"
-            v-bind:title="userlist3.title"
-            v-bind:content="userlist3.content"
-          ></umnitem>
-        </div>
-
-        <div class="umnitem4">
-          <umnitem
-            v-for="userlist4 in userlists4"
-            v-bind:key="userlist4.id"
-            v-bind:id="userlist4.id"
-            v-bind:imgsrc="userlist4.imgsrc"
-            v-bind:title="userlist4.title"
-            v-bind:content="userlist4.content"
-          ></umnitem>
-        </div>
+      <div class="umit" v-for="items in userlists" :key="items.id">
+        <umnitem
+          v-for="item in items.data"
+          v-bind:id="item.art_id"
+          v-bind:key="item.art_id"
+          v-bind:imgsrc="item.imgsrc ? local + item.imgsrc : null"
+          v-bind:title="item.title"
+          v-bind:content="item.text"
+        ></umnitem>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import umnitem from "../../components/umnitem.vue";
-import usd from "../../components/usd.vue";
+const axios = require("axios");
 
-import dataList from "../../components/dataList.vue"; 
+import umnitem from "../../components/umnitem.vue";
+import userpanel from "../../components/userpanel.vue";
 
 export default {
+  created() {
+    const token = this.Global.checkToken();
+    if (token) {
+      axios
+        .get(this.Global.local + "/article/getUserArt", {
+          params: {
+            token: token,
+          },
+        })
+        .then((res) => {
+          if (res.data.message == "OK") {
+            console.log("User Token验证", res.data.message);
+
+            this.username = res.data.userData[0].user_name;
+            this.userimg = res.data.userData[0].user_img;
+
+            this.userlists = this.layoutList(res.data.userArtList);
+          } else {
+            alert("Token验证失败");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      alert("请先登录");
+      this.$router.push("/login");
+    }
+  },
   data() {
     return {
-      userlists: dataList.data,
-      userlists1: [],
-      userlists2: [],
-      userlists3: [],
-      userlists4: [],
+      userlists: [],
+      username: null,
+      userimg: null,
+      local: this.Global.local,
     };
   },
+  methods: {
+    /**
+     * 将一定数量的用户文章以固定四列的布局输出
+     * 此函数用于确定每列文章数量及填充数据
+     */
+    layoutList(data) {
+      //每列个数
+      let [colNum, spotNum] = (data.length / 4).toString().split(".");
 
-  created: function () {
-    //记录总数
-    var listnum = Object.keys(this.userlists).length;
+      let dataInx = 0;
 
-    //每列放置的记录数
-    var colnum = (listnum - 1) / 4;
+      let res = [];
+      while (res.length !== 4) {
+        let colList = { data: [], id: res.length };
 
-    //i是userlists的索引 将会在4个循环中从1直到listnum
-    //j是每个userlist1234的索引 每次循环都会重置为0
-    var i = 0;
-    var j = 0;
+        for (let i = 0; i < colNum; i++) {
+          colList.data[i] = data[dataInx];
+          dataInx++;
+        }
 
-    //这4个循环的作用是将userlists中的项均匀的分配给每个userlist1234
-    for (j = 0; i < colnum; i++, j++) {
-      this.userlists1[j] = this.userlists[i];
-    }
-    for (j = 0; i < colnum * 2; i++, j++) {
-      this.userlists2[j] = this.userlists[i];
-    }
-    for (j = 0; i < colnum * 3; i++, j++) {
-      this.userlists3[j] = this.userlists[i];
-    }
-    for (j = 0; i <= colnum * 4; i++, j++) {
-      this.userlists4[j] = this.userlists[i];
-    }
+        res.push(colList);
+      }
+
+      if (spotNum) {
+        spotNum = "0." + spotNum;
+        spotNum = parseFloat(spotNum) * 4;
+
+        for (let i = 0, j = data.length - spotNum; i < spotNum; i++, j++) {
+          res[i].data.push(data[j]);
+        }
+      }
+
+      return res;
+    },
   },
   components: {
-    usd,
+    userpanel,
     umnitem,
   },
 };
 </script>
 
 <style scoped>
+#user {
+  display: flex;
+}
+
+.usertop {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  background-color: white;
+  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
+}
+
+.usertop a {
+  margin-right: 20px;
+  line-height: 40px;
+  cursor: pointer;
+  float: right;
+  font-size: 0.8;
+}
+
+.umit {
+  margin-top: 70px;
+  width: 240px;
+  margin-left: 40px;
+  float: left;
+}
 </style>

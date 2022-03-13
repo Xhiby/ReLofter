@@ -1,35 +1,33 @@
 <template>
   <div class="more">
-    <div id="topbar">
-      <topbar></topbar>
-    </div>
+    <topbar></topbar>
 
     <div id="hdview"></div>
 
-    <div id="morecontent">
+    <div id="morecont">
       <div class="contentitem">
-        <moreitem src="img/11.jpg"></moreitem>
-        <moreitem src="img/12.jpg"></moreitem>
-        <moreitem src="img/9.jpg"></moreitem>
-        <moreitem src="img/10.jpg"></moreitem>
+        <moreitem :src="str + '/public/upload_img_art/1.jpg'"></moreitem>
+        <moreitem :src="str + '/public/upload_img_art/12.jpg'"></moreitem>
+        <moreitem :src="str + '/public/upload_img_art/9.jpg'"></moreitem>
+        <moreitem :src="str + '/public/upload_img_art/10.jpg'"></moreitem>
       </div>
       <div class="contentitem">
-        <moreitem src="img/9.jpg"></moreitem>
-        <moreitem src="img/11.jpg"></moreitem>
-        <moreitem src="img/10.jpg"></moreitem>
-        <moreitem src="img/12.jpg"></moreitem>
+        <moreitem :src="str + '/public/upload_img_art/9.jpg'"></moreitem>
+        <moreitem :src="str + '/public/upload_img_art/1.jpg'"></moreitem>
+        <moreitem :src="str + '/public/upload_img_art/10.jpg'"></moreitem>
+        <moreitem :src="str + '/public/upload_img_art/12.jpg'"></moreitem>
       </div>
       <div class="contentitem">
-        <moreitem src="img/10.jpg"></moreitem>
-        <moreitem src="img/12.jpg"></moreitem>
-        <moreitem src="img/11.jpg"></moreitem>
-        <moreitem src="img/9.jpg"></moreitem>
+        <moreitem :src="str + '/public/upload_img_art/10.jpg'"></moreitem>
+        <moreitem :src="str + '/public/upload_img_art/12.jpg'"></moreitem>
+        <moreitem :src="str + '/public/upload_img_art/1.jpg'"></moreitem>
+        <moreitem :src="str + '/public/upload_img_art/9.jpg'"></moreitem>
       </div>
       <div class="contentitem">
-        <moreitem src="img/12.jpg"></moreitem>
-        <moreitem src="img/10.jpg"></moreitem>
-        <moreitem src="img/9.jpg"></moreitem>
-        <moreitem src="img/11.jpg"></moreitem>
+        <moreitem :src="str + '/public/upload_img_art/12.jpg'"></moreitem>
+        <moreitem :src="str + '/public/upload_img_art/10.jpg'"></moreitem>
+        <moreitem :src="str + '/public/upload_img_art/9.jpg'"></moreitem>
+        <moreitem :src="str + '/public/upload_img_art/1.jpg'"></moreitem>
       </div>
     </div>
   </div>
@@ -44,8 +42,29 @@ export default {
     topbar,
     moreitem,
   },
+  data() {
+    return {
+      str: this.Global.local,
+    };
+  },
 };
 </script>
 
 <style scoped>
+#hdview {
+  width: 100%;
+  height: 100px;
+  background-color: white;
+  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
+}
+
+#morecont {
+  width: 1200px;
+  margin: 50px auto;
+}
+
+.contentitem {
+  width: 25%;
+  float: left;
+}
 </style>

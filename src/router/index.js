@@ -2,8 +2,13 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Login from '../page/login/Login.vue'
+import PhoneLogin from '../page/login/PhoneLogin.vue'
+
 import Index from '../page/index/Index.vue'
+import PhoneIndex from '../page/index/PhoneIndex.vue'
+
 import More from '../page/more/More.vue'
+
 import User from '../page/user/User.vue'
 
 Vue.use(VueRouter)
@@ -16,6 +21,16 @@ const routes = [{
         path: '/login',
         name: 'Login',
         component: Login
+    },
+    {
+        path: '/phonelogin',
+        name: 'PhoneLogin',
+        component: PhoneLogin
+    },
+    {
+        path: '/phoneindex',
+        name: 'PhoneIndex',
+        component: PhoneIndex
     },
     {
         path: '/index',
@@ -35,8 +50,7 @@ const routes = [{
 ]
 
 const router = new VueRouter({
-    // base: '/relofter',
-    // mode: 'history',
+    mode: 'history',
     base: process.env.BASE_URL,
     routes
 })
